@@ -120,6 +120,19 @@ section{padding:6rem 4rem}
 .room-inquire{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);font-weight:600;text-decoration:none;border-bottom:1px solid transparent;transition:border-color 0.2s}
 .room-inquire:hover{border-bottom-color:var(--gold)}
 
+/* ── ROOM CAROUSEL ── */
+.room-photo{background-size:cover;background-position:center;position:relative;overflow:hidden;flex-shrink:0;transition:background-image 0.4s ease}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:rgba(42,31,20,0.52);border:none;color:var(--cream);width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity 0.2s,background 0.2s}
+.room-card:hover .carousel-btn{opacity:1}
+.carousel-btn:hover{background:rgba(42,31,20,0.85)}
+.carousel-btn.prev{left:0.7rem}
+.carousel-btn.next{right:0.7rem}
+.carousel-btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.carousel-dots{position:absolute;bottom:0.75rem;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:3}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(253,250,246,0.38);border:none;cursor:pointer;padding:0;transition:background 0.2s,transform 0.2s;flex-shrink:0}
+.carousel-dot.active{background:var(--gold);transform:scale(1.25)}
+.carousel-single .carousel-btn,.carousel-single .carousel-dots{display:none!important}
+
 /* ── GALLERY ── */
 #gallery{background:var(--brown-dark);padding:6rem 4rem}
 .gallery-header{max-width:1280px;margin:0 auto 2.5rem;display:flex;align-items:flex-end;justify-content:space-between}
@@ -305,8 +318,11 @@ footer{background:#0F0A06;padding:2.4rem 4rem;display:flex;align-items:center;ju
   <!-- Top row: VIP + Junior Queen (most popular) -->
   <div class="rooms-top">
     <div class="room-card fade-in">
-      <div class="room-photo rp-vip">
+      <div class="room-photo" data-images="IMG-3640.jpg">
         <span class="room-tag tag-vip">VIP · Signature</span>
+        <button class="carousel-btn prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="carousel-btn next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="carousel-dots"></div>
       </div>
       <div class="room-body">
         <span class="room-badge">VIP Senior Suite</span>
@@ -319,8 +335,11 @@ footer{background:#0F0A06;padding:2.4rem 4rem;display:flex;align-items:center;ju
       </div>
     </div>
     <div class="room-card fade-in">
-      <div class="room-photo rp-jq">
+      <div class="room-photo" data-images="IMG-3660-HDR.jpg">
         <span class="room-tag tag-popular">Most Popular</span>
+        <button class="carousel-btn prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="carousel-btn next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="carousel-dots"></div>
       </div>
       <div class="room-body">
         <span class="room-badge">Junior Suite</span>
@@ -337,7 +356,11 @@ footer{background:#0F0A06;padding:2.4rem 4rem;display:flex;align-items:center;ju
   <!-- Bottom row: Senior Suite, Junior Twin, Standard -->
   <div class="rooms-bottom">
     <div class="room-card fade-in">
-      <div class="room-photo rp-senior"></div>
+      <div class="room-photo" data-images="DSC0782-HDR.jpg">
+        <button class="carousel-btn prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="carousel-btn next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="carousel-dots"></div>
+      </div>
       <div class="room-body">
         <span class="room-badge">Senior Suite</span>
         <h3 class="room-name">Senior Suite</h3>
@@ -349,7 +372,11 @@ footer{background:#0F0A06;padding:2.4rem 4rem;display:flex;align-items:center;ju
       </div>
     </div>
     <div class="room-card fade-in">
-      <div class="room-photo rp-jt"></div>
+      <div class="room-photo" data-images="IMG-3778-HDR.jpg">
+        <button class="carousel-btn prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="carousel-btn next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="carousel-dots"></div>
+      </div>
       <div class="room-body">
         <span class="room-badge">Junior Suite</span>
         <h3 class="room-name">Junior Suite — Twin</h3>
@@ -361,7 +388,11 @@ footer{background:#0F0A06;padding:2.4rem 4rem;display:flex;align-items:center;ju
       </div>
     </div>
     <div class="room-card fade-in">
-      <div class="room-photo rp-std"></div>
+      <div class="room-photo" data-images="DSC0693.jpg">
+        <button class="carousel-btn prev" aria-label="Previous"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="carousel-btn next" aria-label="Next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="carousel-dots"></div>
+      </div>
       <div class="room-body">
         <span class="room-badge">Standard Room</span>
         <h3 class="room-name">Standard Room</h3>
@@ -490,6 +521,10 @@ footer{background:#0F0A06;padding:2.4rem 4rem;display:flex;align-items:center;ju
           <div class="amenity-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <div class="amenity-text"><h4>Free Parking & Security</h4><p>Complimentary on-site parking and 24-hour security for complete peace of mind throughout your stay.</p></div>
         </div>
+        <div class="amenity-item">
+          <div class="amenity-icon"><svg viewBox="0 0 24 24"><path d="M6.5 6.5h11M6.5 17.5h11M4 12h16M7 9.5V15M17 9.5V15" stroke-linecap="round"/><circle cx="4" cy="12" r="1.5"/><circle cx="20" cy="12" r="1.5"/></svg></div>
+          <div class="amenity-text"><h4>On-Site Gym — The Fit Room</h4><p>A fully equipped private gym available exclusively to Britannia Suites guests, open daily for your fitness routine.</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -504,7 +539,7 @@ footer{background:#0F0A06;padding:2.4rem 4rem;display:flex;align-items:center;ju
       <p>Our team is ready to help plan the perfect stay — whether a short visit or a long-term home in Beirut.</p>
       <div class="contact-details">
         <div class="contact-detail"><span class="cd-label">Address</span><span class="cd-value">Britannia Suites<br>Andalous St, Raouche<br>Beirut, Lebanon</span></div>
-        <div class="contact-detail"><span class="cd-label">Cell</span><span class="cd-value"><a href="tel:+96121793792">+961 21 793 792</a></span></div>
+        <div class="contact-detail"><span class="cd-label">Cell</span><span class="cd-value"><a href="tel:+96181870886">+961 81 870 886</a></span></div>
         <div class="contact-detail"><span class="cd-label">Landline</span><span class="cd-value"><a href="tel:+96121793794">+961 21 793 794</a></span></div>
         <div class="contact-detail"><span class="cd-label">Email</span><span class="cd-value"><a href="mailto:britanniasuiteshotel@gmail.com">britanniasuiteshotel@gmail.com</a></span></div>
         <div class="contact-detail"><span class="cd-label">Hours</span><span class="cd-value">Reception open 24 hours · 7 days a week</span></div>
@@ -536,6 +571,32 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
 },{threshold:0.1});
 document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+// ── ROOM CAROUSELS ──
+document.querySelectorAll('.room-photo').forEach(photo=>{
+  const images=(photo.dataset.images||'').split(',').map(s=>s.trim()).filter(Boolean);
+  if(!images.length)return;
+  let current=0;
+  photo.style.backgroundImage=`url('${images[0]}')`;
+  photo.style.backgroundSize='cover';
+  photo.style.backgroundPosition='center';
+  if(images.length===1){photo.classList.add('carousel-single');return;}
+  // Build dots
+  const dotsEl=photo.querySelector('.carousel-dots');
+  images.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='carousel-dot'+(i===0?' active':'');
+    d.addEventListener('click',e=>{e.stopPropagation();goTo(i);});
+    dotsEl.appendChild(d);
+  });
+  function goTo(idx){
+    current=(idx+images.length)%images.length;
+    photo.style.backgroundImage=`url('${images[current]}')`;
+    photo.querySelectorAll('.carousel-dot').forEach((d,i)=>d.classList.toggle('active',i===current));
+  }
+  photo.querySelector('.carousel-btn.prev').addEventListener('click',e=>{e.stopPropagation();goTo(current-1);});
+  photo.querySelector('.carousel-btn.next').addEventListener('click',e=>{e.stopPropagation();goTo(current+1);});
+});
 </script>
 </body>
 </html>

@@ -137,8 +137,7 @@ section{padding:6rem 4rem}
 .rg-close{background:none;border:none;cursor:pointer;color:rgba(249,245,239,0.45);font-size:1.4rem;line-height:1;padding:0.15rem 0.4rem;transition:color 0.2s}
 .rg-close:hover{color:var(--gold-light)}
 .rg-viewer{position:relative;flex:1;min-height:0;background:#0a0704;display:flex;align-items:center;justify-content:center}
-.rg-main-img{max-width:100%;max-height:100%;object-fit:contain;display:block;transition:opacity 0.18s}
-.rg-main-img.fade{opacity:0}
+.rg-main-img{max-width:100%;max-height:100%;object-fit:contain;display:block}
 .rg-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;background:rgba(42,31,20,0.6);border:none;color:var(--cream);width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;flex-shrink:0}
 .rg-nav:hover{background:rgba(42,31,20,0.95)}
 .rg-nav.prev{left:0.8rem}
@@ -614,11 +613,19 @@ document.querySelectorAll('.room-photo[data-images]').forEach(photo=>{
   const prevBtn=document.getElementById('rg-prev');
   const nextBtn=document.getElementById('rg-next');
   let images=[],current=0;
+  const cache={};
+
+  // Fire-and-forget preload — browser caches decoded image for instant display
+  function preload(src){
+    if(cache[src])return;
+    const img=new Image();
+    img.src=src;
+    cache[src]=img;
+  }
 
   function open(imgs,name,startIndex){
     images=imgs; current=startIndex||0;
     titleEl.textContent=name;
-    // Build thumbnails
     thumbsEl.innerHTML='';
     images.forEach((src,i)=>{
       const t=document.createElement('img');
@@ -627,35 +634,35 @@ document.querySelectorAll('.room-photo[data-images]').forEach(photo=>{
       t.addEventListener('click',()=>goTo(i));
       thumbsEl.appendChild(t);
     });
-    showImage(current,false);
+    showImage(current);
     overlay.classList.add('open');
     document.body.style.overflow='hidden';
-    // Scroll active thumb into view
     const activeThumb=thumbsEl.querySelector('.rg-thumb.active');
     if(activeThumb)activeThumb.scrollIntoView({inline:'center',block:'nearest'});
+    // Preload all images in background after a short yield so the modal renders first
+    setTimeout(()=>images.forEach(src=>preload(src)),100);
   }
 
   function close(){
     overlay.classList.remove('open');
     document.body.style.overflow='';
-    mainImg.src='';
   }
 
-  function showImage(idx,animate){
-    if(animate!==false){mainImg.classList.add('fade');}
-    setTimeout(()=>{
-      current=(idx+images.length)%images.length;
-      mainImg.src=images[current];
-      mainImg.classList.remove('fade');
-      counterEl.textContent=(current+1)+' / '+images.length;
-      thumbsEl.querySelectorAll('.rg-thumb').forEach((t,i)=>{
-        t.classList.toggle('active',i===current);
-        if(i===current)t.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
-      });
-    },animate!==false?150:0);
+  function showImage(idx){
+    current=(idx+images.length)%images.length;
+    // Swap instantly — no fade delay
+    mainImg.src=images[current];
+    counterEl.textContent=(current+1)+' / '+images.length;
+    thumbsEl.querySelectorAll('.rg-thumb').forEach((t,i)=>{
+      t.classList.toggle('active',i===current);
+      if(i===current)t.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+    });
+    // Eagerly preload neighbours so they're ready before the user clicks
+    preload(images[(current+1)%images.length]);
+    preload(images[(current-1+images.length)%images.length]);
   }
 
-  function goTo(idx){showImage(idx,true);}
+  function goTo(idx){showImage(idx);}
 
   prevBtn.addEventListener('click',()=>goTo(current-1));
   nextBtn.addEventListener('click',()=>goTo(current+1));
@@ -668,7 +675,6 @@ document.querySelectorAll('.room-photo[data-images]').forEach(photo=>{
     else if(e.key==='Escape')close();
   });
 
-  // Wire up each room's View Photos button
   document.querySelectorAll('.room-photo[data-images]').forEach(photo=>{
     const btn=photo.querySelector('.view-gallery-btn');
     if(!btn)return;
